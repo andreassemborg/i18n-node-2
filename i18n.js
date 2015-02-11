@@ -210,6 +210,24 @@ i18n.prototype = {
 		}
 	},
 
+	setLocaleFromUri: function(req) {
+		req = req || this.request;
+		if(!req) {
+			return;
+		}
+		for(var key in this.requestBasedLocales) {
+			var fullUrl = req.hostname + req.url;
+
+			if(fullUrl.indexOf(key) > -1) {
+				var locale = this.requestBasedLocales[key];
+				if(this.devMode) {
+					console.log("Overriding locale from request url: " + locale);
+				}
+				this.setLocale(locale);
+			}
+		}
+	},
+
 	preferredLocale: function(req) {
 		req = req || this.request;
 
